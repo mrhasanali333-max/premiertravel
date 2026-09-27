@@ -1,0 +1,2 @@
+export type UserProfile = { uid: string; email: string | null; displayName: string | null; createdAt?: unknown };
+export type UsageSummary = { dailyRequests: number; monthlyRequests: number; uploadedFiles: number };

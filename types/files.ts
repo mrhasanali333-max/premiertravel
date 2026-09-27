@@ -1,0 +1,2 @@
+export type UserFile = { id: string; userId: string; name: string; size: number; storagePath: string; createdAt?: unknown };
+export type DocumentAction = "summarize" | "ask" | "explain" | "mcqs" | "translate";
