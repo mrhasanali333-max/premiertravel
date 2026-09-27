@@ -1,0 +1,1 @@
+export type BusinessTask = "idea" | "marketing" | "social" | "product" | "ad" | "names";

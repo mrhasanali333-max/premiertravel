@@ -1,6 +1,5 @@
-import { Navbar } from "@/components/Navbar";
-import { SiteFooter } from "@/components/SiteFooter";
+import type { Metadata } from "next";
+import { PricingWorkspace } from "@/components/PricingWorkspace";
 
-export default function PricingPage() {
-  return <div className="site-shell"><Navbar /><main className="section"><div className="section-inner" style={{ maxWidth: 760 }}><div className="eyebrow">Simple starting point</div><h1 style={{ margin: "12px 0", fontSize: 34, letterSpacing: "-.05em" }}>Pricing is coming later.</h1><p style={{ maxWidth: 560, color: "var(--muted)", lineHeight: 1.7 }}>Phase 1 is focused on a dependable workspace foundation. There are no paid plans or subscription charges in this release.</p><div className="workspace-card" style={{ marginTop: 25, padding: 22 }}><h2 style={{ margin: 0, fontSize: 16 }}>Free access foundation</h2><p style={{ color: "var(--muted)", fontSize: 13, lineHeight: 1.65 }}>Create an account to try the workspace. Request usage is tracked per account so plans can be introduced later without changing the core data model.</p><a className="button button-primary" href="/signup">Create an account</a></div></div></main><SiteFooter /></div>;
-}
+export const metadata: Metadata = { title: "Pricing | NEXORA AI", description: "Compare Free and Pro daily usage limits for the NEXORA AI workspace.", alternates: { canonical: "/pricing" } };
+export default function PricingPage() { return <PricingWorkspace />; }

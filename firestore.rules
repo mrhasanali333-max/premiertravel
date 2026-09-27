@@ -14,7 +14,16 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow read, create, update, delete: if signedIn() && request.auth.uid == userId;
+      allow read, delete: if signedIn() && request.auth.uid == userId;
+      allow create: if signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.userId == userId
+        && (!('planId' in request.resource.data) || request.resource.data.planId == 'free')
+        && request.resource.data.keys().hasOnly(['userId', 'displayName', 'email', 'photoURL', 'favoriteTools', 'createdAt', 'updatedAt']);
+      allow update: if signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.userId == userId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName', 'email', 'photoURL', 'favoriteTools', 'updatedAt']);
     }
 
     match /conversations/{conversationId} {
@@ -41,6 +50,11 @@ service cloud.firestore {
       allow update: if ownsDocument() && request.resource.data.userId == resource.data.userId;
     }
 
+    match /images/{imageId} {
+      allow read: if ownsDocument();
+      allow write: if false;
+    }
+
     match /history/{historyId} {
       allow read, delete: if ownsDocument();
       allow create: if createsForSelf();
@@ -50,6 +64,24 @@ service cloud.firestore {
     match /usage/{userId} {
       allow read: if signedIn() && request.auth.uid == userId;
       allow write: if false;
+
+      match /daily/{date} {
+        allow read: if signedIn() && request.auth.uid == userId;
+        allow write: if false;
+      }
+    }
+
+    match /agentRuns/{runId} {
+      allow read: if ownsDocument();
+      allow write: if false;
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if ownsDocument();
+      allow create, delete: if false;
+      allow update: if ownsDocument()
+        && request.resource.data.userId == resource.data.userId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['read', 'readAt']);
     }
   }
 }

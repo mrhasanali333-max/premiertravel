@@ -4,6 +4,13 @@ import { Navbar } from "@/components/Navbar";
 import { SiteFooter } from "@/components/SiteFooter";
 import { PromptLauncher } from "@/components/PromptLauncher";
 import { ToolCard } from "@/components/ToolCard";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "NEXORA AI | One AI. Every Task.",
+  description: "NEXORA AI is an all-in-one AI workspace for chat, writing, study, PDF analysis and productivity.",
+  alternates: { canonical: "/" },
+};
 
 const tools: { title: string; description: string; href: string; icon: LucideIcon }[] = [
   { title: "AI Chat", description: "Think through questions and ideas with a focused assistant.", href: "/chat", icon: MessageSquareText },

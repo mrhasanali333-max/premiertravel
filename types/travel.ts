@@ -1,0 +1,2 @@
+export type TravelTask = "itinerary" | "budget" | "packing";
+export type TravelEstimate = { currency?: string; accommodation?: number; transportation?: number; food?: number; activities?: number; emergency?: number };

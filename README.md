@@ -92,4 +92,58 @@ Deploy the app to a Node-capable host such as Vercel or Firebase App Hosting. Co
 GitHub Pages serves static files only. It cannot execute these Next.js server API routes, verify Firebase Admin tokens, keep the AI secret server-side, or accept secure server uploads. Therefore this full-stack version cannot be deployed as a functional app through the repository's GitHub Pages setting. A static-only export would require removing or separately hosting those server features; use a Node-capable deployment for Phase 1 functionality.
 
 The privacy and terms pages included here are implementation placeholders. Replace them with reviewed policies before making the service available to users.
+
+## Phase 2 tools
+
+The existing Phase 1 chat, writing, study, PDF, authentication, and history routes remain in place. Phase 2 adds:
+
+- `/tools/image`: server-side image generation, prompt description, background removal, and enhancement adapters.
+- `/tools/voice`: audio transcription, meeting notes/audio summaries, optional browser recording, and text-to-speech.
+- `/tools/business`, `/tools/travel`, and `/tools/coding`: configurable task workbenches backed by `/api/business`, `/api/travel`, and `/api/coding`.
+- `/agents`: controlled sequential workflows whose task lists are explicitly defined in `lib/agents.ts`; no browsing, purchases, or code execution.
+- Searchable/categorized tool discovery, account-level favorites, Ctrl+K search, owner-scoped notifications, richer usage cards, and Free/Pro limit foundations.
+- Multi-format file uploads for PDF, TXT, CSV, DOCX, PNG, JPEG, and WebP. TXT/CSV extraction is local; other formats require an extraction service. Rename, search, sort, and delete operations are owner checked.
+
+## Phase 2 environment variables
+
+`.env.example` and `.env.local.example` list the complete variable set. Copy the template to `.env.local`; never put provider secrets in `NEXT_PUBLIC_` variables.
+
+| Variable | Purpose |
+| --- | --- |
+| `IMAGE_PROVIDER_API_KEY` | Server-only image provider credential |
+| `IMAGE_PROVIDER_BASE_URL` | Provider base URL; must support OpenAI-compatible `/images/generations`; image editing/description uses `/images/{describe,remove-background,enhance}` |
+| `VOICE_PROVIDER_API_KEY` | Server-only audio provider credential |
+| `VOICE_PROVIDER_BASE_URL` | OpenAI-compatible `/audio/transcriptions` and `/audio/speech`; defaults to OpenAI API base |
+| `VOICE_TRANSCRIPTION_MODEL` | Optional transcription model; defaults to `whisper-1` |
+| `VOICE_SPEECH_MODEL` | Optional speech model; defaults to `tts-1` |
+| `DOCUMENT_EXTRACTION_URL` | Optional multipart extractor for DOCX/images; accepts `file` and `mimeType`, returns `{ "text": "..." }` |
+| `DOCUMENT_EXTRACTION_API_KEY` | Optional bearer token for the generic document extractor |
+| `PDF_TEXT_EXTRACTION_URL` | PDF extraction endpoint; may fall back to `DOCUMENT_EXTRACTION_URL` |
+| `PDF_TEXT_EXTRACTION_API_KEY` | Optional PDF extractor bearer token |
+
+The image provider returns either `{ "data": [{ "url": "https://..." }] }` or `{ "data": [{ "b64_json": "..." }] }`. Binary image results are saved to Firebase Storage under `users/{userId}/images/{imageId}` and referenced by owner-scoped Firestore `images/{imageId}` and `history` records. The authenticated image retrieval endpoint checks document ownership before reading Storage.
+
+Voice endpoints return provider transcriptions as text and speech as MP3. Transcripts, meeting summaries, and TTS text/settings are saved to private history; generated audio bytes are returned to the browser and are not retained. Browser microphone recording is optional and requires user permission.
+
+## Plans, usage, and agents
+
+`lib/plans.ts` is the single source of Free/Pro limits. New accounts default to Free; changing `users/{userId}.planId` from the client is blocked by `firestore.rules`. A privileged server/admin action is required to assign Pro. Payments are not integrated. `/api/usage` returns the authenticated user's daily counts and plan limits; mutating AI/file routes reserve usage transactionally on the server before provider work. Existing flat `usage/{userId}` fields continue to support Phase 1 dashboard counters; detailed counts are stored at `usage/{userId}/daily/{YYYY-MM-DD}`.
+
+Agent definitions and fixed tasks live in `lib/agents.ts`. `/api/agents/run` authenticates the caller, enforces the daily limit, runs only those sequential tasks, and records `agentRuns/{runId}` with owner, status and task results. Firestore permits owner reads and denies client writes to agent runs and usage data.
+
+## Adding a tool
+
+1. Add its route, icon, category, provider, input/output descriptions, and usage category to `lib/tools.ts`.
+2. Add a plan quota in `lib/plans.ts` if it needs a new usage category.
+3. Put secret-bearing provider calls in a server-side `lib/*-ai.ts` adapter and an authenticated `app/api/*/route.ts` handler.
+4. Validate the Firebase ID token, input, file ownership, and quota on the server before calling providers.
+5. Save results with `userId` ownership and keep the relevant Firestore/Storage rules restrictive.
+
+Deploy the updated security rules after changing `firestore.rules` or `storage.rules`:
+
+```bash
+firebase deploy --only firestore:rules,storage
+```
+
+Image generation, voice services, PDF/DOCX/image extraction, Firebase server APIs, and interactive features remain unavailable until their respective server environment variables and Firebase services are configured. Missing configuration returns an explicit error; the app does not fabricate provider output.
 # premiertravel

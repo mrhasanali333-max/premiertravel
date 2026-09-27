@@ -3,6 +3,7 @@ import { AuthProvider } from "@/components/AuthProvider";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://premiertravel-github.vercel.app"),
   title: "NEXORA AI | One AI. Every Task.",
   description: "NEXORA AI is an all-in-one AI workspace for chat, writing, study, PDF analysis and productivity.",
   openGraph: {

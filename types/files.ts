@@ -1,2 +1,2 @@
-export type UserFile = { id: string; userId: string; name: string; size: number; storagePath: string; createdAt?: unknown };
-export type DocumentAction = "summarize" | "ask" | "explain" | "mcqs" | "translate";
+export type UserFile = { id: string; userId: string; name: string; size: number; mimeType?: string; storagePath: string; createdAt?: unknown };
+export type DocumentAction = "summarize" | "ask" | "explain" | "mcqs" | "quiz" | "key-points" | "notes" | "translate" | "rewrite" | "analyze" | "csv-patterns";
