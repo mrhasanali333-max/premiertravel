@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f9fc">
+  <meta name="description" content="NEXORA AI is an all-in-one AI workspace for chat, writing, study, PDF analysis and productivity.">
+  <title>NEXORA AI | One AI. Every Task.</title>
+  <style>
+    :root{color-scheme:light;--ink:#10233f;--muted:#66758b;--line:#e5ebf2;--paper:#f7f9fc;--blue:#2563eb;--purple:#7252c7;--green:#16875b}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    button,input,textarea{font:inherit}
+    button{cursor:pointer}
+    .topbar{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(18px,5vw,74px);border-bottom:1px solid rgba(16,35,63,.07);background:rgba(255,255,255,.97)}
+    .brand{display:inline-flex;align-items:center;gap:10px;font-weight:750;letter-spacing:-.04em}
+    .brand img{width:32px;height:32px}
+    .brand span{font-size:16px}
+    .nav-links,.nav-actions{display:flex;align-items:center;gap:27px}
+    .nav-links{color:#52627a;font-size:12px;font-weight:600}
+    .nav-links a:hover,.nav-actions a:first-child:hover{color:var(--blue)}
+    .nav-actions{gap:10px}
+    .button{min-height:40px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 15px;border:1px solid transparent;border-radius:8px;font-size:12px;font-weight:650;transition:background .18s,border-color .18s,transform .18s}
+    .button:active{transform:translateY(1px)}
+    .button-primary{color:white;background:var(--blue);box-shadow:0 5px 14px rgba(37,99,235,.18)}
+    .button-primary:hover{background:#1749b8}
+    .button-quiet{color:#52627a;background:transparent}
+    .button-quiet:hover{color:var(--blue);background:#eff5ff}
+    .menu-button{display:none;width:38px;height:38px;place-items:center;border:1px solid var(--line);border-radius:8px;background:white}
+    .mobile-menu{display:none}
+    .hero{padding:86px 18px 70px;text-align:center;background-color:var(--paper);background-image:linear-gradient(rgba(37,99,235,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.035) 1px,transparent 1px);background-size:38px 38px;border-bottom:1px solid #edf1f6}
+    .hero-inner{max-width:900px;margin:auto}
+    .eyebrow{display:inline-flex;align-items:center;gap:7px;color:var(--blue);font-size:10px;font-weight:750;letter-spacing:.04em;text-transform:uppercase}
+    .hero h1{margin:18px 0 13px;font-size:clamp(44px,7vw,70px);line-height:1.04;letter-spacing:-.065em}
+    .hero h1 span{color:var(--blue)}
+    .subtitle{max-width:590px;margin:0 auto;color:#627189;font-size:16px;line-height:1.65}
+    .prompt{max-width:700px;margin:34px auto 0;padding:13px;border:1px solid #dce4ef;border-radius:14px;background:white;box-shadow:0 17px 42px rgba(27,47,78,.09);text-align:left}
+    .prompt textarea{width:100%;min-height:67px;resize:vertical;border:0;outline:0;color:var(--ink);font-size:14px;line-height:1.6}
+    .prompt textarea::placeholder{color:#9aa7b8}
+    .prompt-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:9px;border-top:1px solid #edf1f6}
+    .prompt-tools{display:flex;gap:6px}
+    .prompt-tools button{width:33px;height:33px;display:grid;place-items:center;border:0;border-radius:7px;color:#63738b;background:transparent}
+    .prompt-tools button:hover{color:var(--blue);background:#f1f6ff}
+    .prompt-submit{border:0}
+    .popular{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:23px;color:#76849a;font-size:11px}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border:1px solid #e0e7f0;border-radius:7px;color:#43536a;background:rgba(255,255,255,.9);font-weight:600}
+    .pill:hover{border-color:#b6caf1;color:var(--blue)}
+    .section{padding:72px 20px}
+    .inner{max-width:1080px;margin:auto}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:22px;margin-bottom:26px}
+    .section-head h2{margin:8px 0 0;font-size:28px;letter-spacing:-.045em}
+    .section-head p{max-width:420px;margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+    .tool-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+    .tool-card{min-height:150px;padding:17px;border:1px solid var(--line);border-radius:10px;background:#fff;transition:border-color .18s,transform .18s,box-shadow .18s}
+    .tool-card:hover{transform:translateY(-2px);border-color:#c6d4eb;box-shadow:0 12px 28px rgba(28,49,79,.07)}
+    .icon{width:36px;height:36px;display:grid;place-items:center;border-radius:9px;color:var(--blue);background:#edf4ff}
+    .tool-card h3,.agent-card h3{margin:14px 0 5px;font-size:13px}
+    .tool-card p,.agent-card p{margin:0;color:var(--muted);font-size:11px;line-height:1.55}
+    .agent-section{background:#f7f9fc;border-block:1px solid #edf1f6}
+    .agent-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+    .agent-card{min-height:137px;padding:17px;border:1px solid var(--line);border-radius:9px;background:#fff}
+    .coming{display:inline-block;margin-top:14px;padding:5px 7px;border-radius:5px;color:#6853a8;background:#f1edfb;font-size:9px;font-weight:700}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px 30px}
+    .feature{display:flex;align-items:flex-start;gap:12px}
+    .feature .icon{width:33px;height:33px;flex:none}
+    .feature h3{margin:1px 0 4px;font-size:12px}
+    .feature p{margin:0;color:var(--muted);font-size:11px;line-height:1.5}
+    .setup{padding-top:0}
+    .setup-box{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:21px 23px;border:1px solid var(--line);border-radius:10px;background:#fff}
+    .setup-box h2{margin:0;font-size:18px;letter-spacing:-.03em}
+    .setup-box p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
+    .footer{padding:30px 20px;border-top:1px solid var(--line)}
+    .footer-inner{max-width:1080px;display:flex;align-items:center;justify-content:space-between;gap:22px;margin:auto}
+    .footer-note{margin-top:6px;color:var(--muted);font-size:10px}
+    .footer-links{display:flex;flex-wrap:wrap;gap:17px;color:#627189;font-size:10px}
+    .footer-links a:hover{color:var(--blue)}
+    .notice{position:fixed;z-index:5;right:16px;bottom:16px;left:16px;max-width:620px;margin:auto;padding:12px 15px;border:1px solid #cddcf5;border-radius:8px;color:#29456f;background:#f5f8ff;box-shadow:0 9px 30px rgba(20,40,70,.12);font-size:12px;line-height:1.5}
+    .notice[hidden]{display:none}
+    @media(max-width:780px){.nav-links{gap:15px}.tool-grid,.agent-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-head{align-items:flex-start;flex-direction:column}.section-head p{max-width:520px}}
+    @media(max-width:600px){.topbar{height:62px;padding-inline:15px}.nav-links{display:none}.menu-button{display:grid}.nav-actions>.button-quiet{display:none}.mobile-menu.open{position:absolute;z-index:4;top:61px;right:10px;left:10px;display:grid;gap:2px;padding:8px;border:1px solid var(--line);border-radius:9px;background:white;box-shadow:0 12px 30px rgba(20,40,70,.12)}.mobile-menu a{padding:10px;border-radius:6px;color:#52627a;font-size:12px}.hero{padding:61px 15px 52px}.hero h1{font-size:44px}.subtitle{font-size:14px}.prompt{margin-top:25px;padding:10px}.section{padding:51px 16px}.section-head h2{font-size:24px}.tool-grid,.agent-grid{gap:8px}.tool-card,.agent-card{padding:13px}.tool-card{min-height:140px}.feature-grid{grid-template-columns:1fr;gap:18px}.setup-box,.footer-inner{align-items:flex-start;flex-direction:column}.footer-links{gap:13px}}
+    @media(max-width:350px){.hero h1{font-size:39px}.popular{gap:6px}.pill{padding:7px 8px;font-size:10px}.prompt-submit{padding-inline:10px}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="NEXORA AI home"><img src="./public/logo.svg" alt=""><span>NEXORA AI</span></a>
+    <nav class="nav-links" aria-label="Main navigation"><a href="#home">Home</a><a href="#tools">AI Tools</a><a href="#agents">AI Agents</a><a href="#setup">Pricing</a></nav>
+    <div class="nav-actions"><a class="button button-quiet" href="#setup">Sign in</a><a class="button button-primary" href="#setup">Sign up</a><button class="menu-button" id="menuButton" aria-label="Open menu" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation"><a href="#home">Home</a><a href="#tools">AI Tools</a><a href="#agents">AI Agents</a><a href="#setup">Pricing and setup</a></nav>
+  </header>
+  <main>
+    <section class="hero" id="home"><div class="hero-inner">
+      <div class="eyebrow"><span aria-hidden="true">✦</span> A clearer way to get things done</div>
+      <h1>One AI.<br><span>Every Task.</span></h1>
+      <p class="subtitle">Write, study, analyze files and get things done with one powerful AI workspace.</p>
+      <form class="prompt" id="promptForm"><label class="visually-hidden" for="promptInput">What do you want to do?</label><textarea id="promptInput" placeholder="What do you want to do?" maxlength="4000"></textarea><div class="prompt-bottom"><div class="prompt-tools"><button type="button" aria-label="Files require app hosting" title="Files require app hosting"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m21 11.5-8.8 8.8a5 5 0 0 1-7.1-7.1l9.2-9.1a3.4 3.4 0 0 1 4.8 4.8l-9.2 9.2a1.8 1.8 0 0 1-2.6-2.6l8.5-8.5"/></svg></button><button type="button" aria-label="Voice input coming soon" title="Voice input coming soon" disabled><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></svg></button></div><button class="button button-primary prompt-submit" type="submit">Start with AI <span aria-hidden="true">↑</span></button></div></form>
+      <div class="popular"><span>Popular tools</span><a class="pill" href="#tools">▤ &nbsp;Chat</a><a class="pill" href="#tools">↗ &nbsp;Writing</a><a class="pill" href="#tools">▣ &nbsp;Study</a><a class="pill" href="#tools">▧ &nbsp;PDF</a></div>
+    </div></section>
+    <section class="section" id="tools"><div class="inner"><div class="section-head"><div><div class="eyebrow">One workspace, ready</div><h2>Choose a tool. Keep your flow.</h2></div><p>Focused tools for the work you already do, with your conversations and files kept close.</p></div><div class="tool-grid">
+      <a class="tool-card" href="#setup"><span class="icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg></span><h3>AI Chat</h3><p>Think through questions and ideas with a focused assistant.</p></a>
+      <a class="tool-card" href="#setup"><span class="icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg></span><h3>AI Writing</h3><p>Draft, rewrite and refine work in your chosen voice.</p></a>
+      <a class="tool-card" href="#setup"><span class="icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span><h3>AI Study</h3><p>Turn difficult topics into explanations and practice.</p></a>
+      <a class="tool-card" href="#setup"><span class="icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8m-8 4h8"/></svg></span><h3>AI PDF</h3><p>Upload a document and work with its contents.</p></a>
+    </div></div></section>
+    <section class="section agent-section" id="agents"><div class="inner"><div class="section-head"><div><div class="eyebrow">Specialists in progress</div><h2>AI agents, when you need them.</h2></div><p>Purpose-built agents are on the roadmap. Your core workspace is available now when hosted with the app server.</p></div><div class="agent-grid"><article class="agent-card"><span class="icon">⌕</span><h3>Research Agent</h3><p>Designed for a focused workflow.</p><span class="coming">Coming soon</span></article><article class="agent-card"><span class="icon">▤</span><h3>Content Agent</h3><p>Designed for a focused workflow.</p><span class="coming">Coming soon</span></article><article class="agent-card"><span class="icon">⌘</span><h3>Study Agent</h3><p>Designed for a focused workflow.</p><span class="coming">Coming soon</span></article><article class="agent-card"><span class="icon">▦</span><h3>Business Agent</h3><p>Designed for a focused workflow.</p><span class="coming">Coming soon</span></article></div></div></section>
+    <section class="section" id="features"><div class="inner"><div class="section-head"><div><div class="eyebrow">Made for everyday work</div><h2>Everything you need in one AI workspace</h2></div></div><div class="feature-grid">
+      <article class="feature"><span class="icon">◉</span><div><h3>AI Chat</h3><p>Keep ideas and follow-up questions in one thread.</p></div></article><article class="feature"><span class="icon">✎</span><div><h3>Writing</h3><p>Create useful first drafts and polish existing text.</p></div></article><article class="feature"><span class="icon">▧</span><div><h3>PDF Analysis</h3><p>Keep files and document tasks together.</p></div></article><article class="feature"><span class="icon">▣</span><div><h3>Study Tools</h3><p>Explain concepts, make practice and plan study.</p></div></article><article class="feature"><span class="icon">◇</span><div><h3>Secure Workspace</h3><p>Your data is isolated to your signed-in account.</p></div></article><article class="feature"><span class="icon">◷</span><div><h3>Conversation History</h3><p>Return to saved chats and generated work.</p></div></article>
+    </div></div></section>
+    <section class="section setup" id="setup"><div class="inner"><div class="setup-box"><div><h2>GitHub Pages preview</h2><p>This page previews the workspace design. Sign-in, AI requests and file processing need the full app deployed on a Node.js host.</p></div><a class="button button-primary" href="https://github.com/mrhasanali333-max/premiertravel#deployment" target="_blank" rel="noopener noreferrer">App deployment details <span aria-hidden="true">↗</span></a></div></div></section>
+  </main>
+  <footer class="footer"><div class="footer-inner"><div><a class="brand" href="#home"><img src="./public/logo.svg" alt=""><span>NEXORA AI</span></a><div class="footer-note">One AI. Every Task.</div></div><nav class="footer-links" aria-label="Footer navigation"><a href="#home">Home</a><a href="#tools">AI Tools</a><a href="#setup">Pricing</a><a href="https://github.com/mrhasanali333-max/premiertravel#firebase-setup">Privacy</a><a href="https://github.com/mrhasanali333-max/premiertravel#deployment">Terms</a><a href="mailto:hello@nexora.ai">Contact</a></nav></div></footer>
+  <div class="notice" id="notice" role="status" aria-live="polite" hidden></div>
+  <script>
+    const notice=document.getElementById('notice');
+    const showNotice=(message)=>{notice.textContent=message;notice.hidden=false;window.clearTimeout(showNotice.timer);showNotice.timer=window.setTimeout(()=>notice.hidden=true,6500)};
+    document.getElementById('promptForm').addEventListener('submit',(event)=>{event.preventDefault();showNotice('This GitHub Pages preview is static. Deploy the full NEXORA app to a Node.js host to use chat, writing, accounts and files.')});
+    const menuButton=document.getElementById('menuButton');const menu=document.getElementById('mobileMenu');
+    menuButton.addEventListener('click',()=>{const isOpen=menu.classList.toggle('open');menuButton.setAttribute('aria-expanded',String(isOpen));menuButton.setAttribute('aria-label',isOpen?'Close menu':'Open menu')});
+    menu.addEventListener('click',(event)=>{if(event.target.closest('a')){menu.classList.remove('open');menuButton.setAttribute('aria-expanded','false');menuButton.setAttribute('aria-label','Open menu')}});
+  </script>
+</body>
+</html>
